@@ -1,16 +1,23 @@
 package db;
+import java.io.FileInputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/startersql";
-    private static final String USER = "om";
-    private static final String PASSWORD = "Ompathak@18";
 
     public static Connection getConnection() {
         try {
+            Properties props = new Properties();
+            props.load(new FileInputStream("config.properties"));
+
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String pass = props.getProperty("db.password");
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+
+            return DriverManager.getConnection(url, user, pass);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

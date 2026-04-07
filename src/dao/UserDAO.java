@@ -60,7 +60,7 @@ public class UserDAO {
         int rows = ps.executeUpdate();
 
         if (rows > 0) {
-            System.out.println("User inserted successfully ✅");
+            System.out.println("User inserted successfully ");
         }
 
         con.close();
