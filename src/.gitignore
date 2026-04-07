@@ -1,0 +1,12 @@
+# Compiled files
+bin/
+*.class
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+
+# Logs
+*.log
