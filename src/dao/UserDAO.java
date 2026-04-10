@@ -11,13 +11,13 @@ public class UserDAO {
 
         ArrayList<User> list = new ArrayList<>();
 
-        try {
-            Connection con = DBConnection.getConnection();
+        try (Connection con = DBConnection.getConnection();) {
+            
 
             String sql = "SELECT * FROM users WHERE is_active = true";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-
+            
             while (rs.next()) {
 
                 User user = new User(
@@ -33,10 +33,10 @@ public class UserDAO {
                 list.add(user);
             }
 
-            con.close();
+            
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
         return list;
@@ -44,8 +44,8 @@ public class UserDAO {
 
     public static void addUser(User user) {
 
-        try {
-            Connection con = DBConnection.getConnection();
+        try(Connection con = DBConnection.getConnection();) {
+            
 
             String sql = "INSERT INTO users (name, email, gender,date_of_birth, salary, is_active) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -66,16 +66,15 @@ public class UserDAO {
 
             con.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
     
 
     public static void updatesalary(int id, double salary) {
 
-        try {
-            Connection con = DBConnection.getConnection();
+        try(Connection con = DBConnection.getConnection();) {
             String sql = "UPDATE users SET salary = ? WHERE id = ?";
             PreparedStatement p = con.prepareStatement(sql);
 
@@ -98,8 +97,8 @@ public class UserDAO {
 
     public static void updateemail(int id, String email) {
         
-        try{
-            Connection con = DBConnection.getConnection();
+        try(Connection con = DBConnection.getConnection();){
+            
             String sql = "UPDATE users SET email = ? WHERE ID = ?";
             PreparedStatement p = con.prepareStatement(sql);
 
@@ -120,8 +119,7 @@ public class UserDAO {
     }
     public static void deleteUser(int id) {
 
-    try {
-        Connection con = DBConnection.getConnection();
+    try(Connection con = DBConnection.getConnection();) {
 
         String sql = "UPDATE users SET is_active = false WHERE id = ?";
 

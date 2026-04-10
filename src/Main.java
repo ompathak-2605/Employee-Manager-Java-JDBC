@@ -1,8 +1,8 @@
 
-import dao.UserDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.User;
+import service.UserService;
 
 public class Main {
 
@@ -28,24 +28,30 @@ public class Main {
                     String email = sc.nextLine();
                     System.out.print("Enter gender(Male/Female/others): ");
                     String gender = sc.nextLine();
+                    if (!gender.equalsIgnoreCase("Male")
+                            && !gender.equalsIgnoreCase("Female")
+                            && !gender.equalsIgnoreCase("other")) {
+                        System.out.println("Invalid Gender");
+                        return;
+                    }
                     System.out.print("Enter dob(YYYY/MM/DD): ");
                     String dob = sc.nextLine();
                     System.out.print("Enter Salary: ");
                     Double salary = sc.nextDouble();
                     User user = new User(0, name, email, gender, dob, salary, true);
-                    UserDAO.addUser(user);
+                    UserService.addUser(user);
                 }
 
                 case 2 -> {
-                    ArrayList<User> users = UserDAO.getAllUsers();
+                    ArrayList<User> users = UserService.getAllUsers();
                     for (User u : users) {
-                        System.out.println(
-                                u.getId() + "|"
-                                + u.getName() + "|"
-                                + u.getEmail() + "|"
-                                + u.getGender() + "|"
-                                + u.getdateofbirth() + "|"
-                                + u.getSalary()
+                        System.out.printf("%-5d %-10s %-20s %-10s %-15s %-20s %n",
+                                u.getId(),
+                                u.getName(),
+                                u.getEmail(),
+                                u.getGender(),
+                                u.getdateofbirth(),
+                                u.getSalary()
                         );
                     }
                 }
@@ -56,24 +62,22 @@ public class Main {
                     System.out.println("Enter your choice");
                     int c = sc.nextInt();
                     switch (c) {
-                        case 1: {
+                        case 1 -> {
                             System.out.println("Enter user id");
                             int id = sc.nextInt();
                             System.out.println("Enter updated salary");
                             double salary = sc.nextDouble();
 
-                            UserDAO.updatesalary(id, salary);
-                            break;
+                            UserService.updateSalary(id, salary);
                         }
-                        case 2: {
+                        case 2 -> {
                             System.out.println("Enter user id");
                             int id = sc.nextInt();
                             sc.nextLine();
                             System.out.println("Enter updated email");
                             String email = sc.nextLine();
 
-                            UserDAO.updateemail(id, email);
-                            break;
+                            UserService.updateEmail(id, email);
                         }
                     }
                 }
@@ -81,7 +85,7 @@ public class Main {
                     System.out.println("Enter user id to delete:");
                     int id = sc.nextInt();
 
-                    UserDAO.deleteUser(id);
+                    UserService.delete(id);
                 }
                 case 5 -> {
                     System.out.println("Exiting...");
@@ -91,7 +95,9 @@ public class Main {
                 default ->
                     System.out.println("Invalid choice!");
             }
+
         }
 
     }
+
 }
